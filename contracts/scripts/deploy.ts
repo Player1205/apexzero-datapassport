@@ -82,3 +82,9 @@ main().catch((err) => {
   console.error(err);
   process.exitCode = 1;
 });
+
+
+// To run this script, use:
+//   npx hardhat run --network <network_name> deploy.ts
+// Example:
+//   npx hardhat run --network shardeum_sphinx deploy.ts
