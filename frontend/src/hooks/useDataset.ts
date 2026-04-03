@@ -24,7 +24,7 @@ export interface BackendDataset {
   chainId?: number;
   anchoredAt?: string;
   tags?: string[];
-  notes?: string;
+  notes?: string;     // add string in it to store the notes for the dataset
   aiAnalysis?: string;
   createdAt: string;
   updatedAt?: string;
