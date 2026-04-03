@@ -32,7 +32,7 @@ export const getDatasetCtrl = async (req: Request, res: Response, next: NextFunc
     if (!dataset) throw new AppError(404, "Not found");
     res.status(200).json({ success: true, dataset });
   } catch (err) { next(err); }
-};
+};    //refine dataset controller for create and scan logic, add description field, strip commit-pinned Gist URLs for tamper detection
 
 export const createDatasetCtrl = async (req: Request, res: Response, next: NextFunction) => {
   try {
