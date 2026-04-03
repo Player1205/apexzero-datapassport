@@ -18,7 +18,7 @@ apiClient.interceptors.request.use((config) => {
     }
   }
   return config;
-});
+});   //made a client api for restricted access to the backend, and to handle token management in one place
 
 // Intercept 401 Unauthorized responses to clear bad tokens
 apiClient.interceptors.response.use(
