@@ -61,7 +61,7 @@ function getLatestUrl(url: string): string {
   return url;
 }
 
-export const scanUrlCtrl = async (req: Request, res: Response, next: NextFunction) => {
+export const scanUrlCtrl = async (req: Request, res: Response, next: NextFunction) => {   //Added ScanURL Section for easy scanning
   try {
     const { url, name, ownerAddress, owner, description } = req.body;
 
