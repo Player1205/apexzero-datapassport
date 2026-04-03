@@ -10,6 +10,8 @@ import path from "path";
  * and calls getDataset() to verify the hash exists on-chain.
  */
 
+//refined verify.ts with better formatting and error handling
+
 const REGISTRY_ABI = [
   "function getDataset(bytes32 datasetHash) view returns (address owner, string name, string metadataUri, uint8 riskScore, uint256 timestamp)",
   "function isRegistered(bytes32 datasetHash) view returns (bool)",
