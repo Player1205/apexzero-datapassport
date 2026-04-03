@@ -20,7 +20,7 @@ import type { BackendDataset, BackendProvenanceStep } from "@/lib/apiClient";
 
 interface ProvenanceCardProps {
   dataset: BackendDataset;
-}
+} //refined provenence card for better ui/ux and more details, also added a timeline of actions taken on the dataset
 
 // Use LucideIcon (the correct type exported by lucide-react) instead of
 // ComponentType<{ size?: number; className?: string }> which conflicts
