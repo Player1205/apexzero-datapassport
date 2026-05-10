@@ -1,3 +1,4 @@
+import crypto from "crypto";
 import { Schema, model, Document, Types } from "mongoose";
 
 export type UserRole = "admin" | "owner" | "auditor" | "viewer";
@@ -36,7 +37,7 @@ const UserSchema = new Schema<IUser>(
     nonce: {
       type: String,
       required: true,
-      default: () => Math.random().toString(36).slice(2),
+      default: () => crypto.randomBytes(32).toString("hex"),
     },
     lastLogin: { type: Date },
   },

@@ -1,5 +1,5 @@
-// @ts-nocheck
 import { ProvenanceCard } from "../models/ProvenanceCard";
+import { logger } from "../utils/logger";
 
 /**
  * Creates or updates the Provenance Card for a dataset.
@@ -7,7 +7,7 @@ import { ProvenanceCard } from "../models/ProvenanceCard";
  */
 export const createProvenanceStep = async (
   datasetId: string | any, 
-  stepData: { action: string; actor: string; details: string; currentHash: string }
+  stepData: { action: string; actor: string; notes: string; currentHash: string }
 ) => {
   try {
     // 1. Look for an existing Provenance Card for this dataset
@@ -26,7 +26,7 @@ export const createProvenanceStep = async (
     card.steps.push({
       action: stepData.action,
       actor: stepData.actor,
-      details: stepData.details,
+      notes: stepData.notes,
       timestamp: new Date()
     });
 
@@ -36,7 +36,7 @@ export const createProvenanceStep = async (
     await card.save();
     return card;
   } catch (error: any) {
-    console.error("[Provenance Service] Failed to log step:", error.message);
+    logger.error("[Provenance Service] Failed to log step:", error);
     throw error;
   }
 };
@@ -49,7 +49,7 @@ export const getProvenanceCard = async (datasetId: string | any) => {
     const card = await ProvenanceCard.findOne({ dataset: datasetId });
     return card;
   } catch (error: any) {
-    console.error("[Provenance Service] Failed to retrieve card:", error.message);
+    logger.error("[Provenance Service] Failed to retrieve card:", error);
     return null;
   }
 };

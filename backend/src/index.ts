@@ -95,7 +95,7 @@ async function start() {
     const server = app.listen(PORT, () => {
       logger.info(`🚀  DataPassport API running on http://localhost:${PORT}`);
       logger.info(`    ENV      : ${env.NODE_ENV}`);
-      logger.info(`    MongoDB  : ${env.MONGODB_URI}`);
+      logger.info(`    MongoDB  : ${env.MONGODB_URI.replace(/\/\/[^@]+@/, "//***:***@")}`);
       logger.info(`    Chain    : ${env.CHAIN_RPC_URL} (id ${env.CHAIN_ID})`);
       logger.info(`    Contract : ${env.CONTRACT_ADDRESS}`);
     });

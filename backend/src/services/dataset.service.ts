@@ -1,10 +1,15 @@
 import { Types } from "mongoose";
 import { Dataset, IDataset } from "../models/Dataset";
 
-export async function listDatasets(query: any = {}) {
-  const filter: any = {};
-  if (query.owner) filter.owner = query.owner;
-  if (query.status) filter.status = query.status;
+export async function listDatasets(query: Record<string, unknown> = {}) {
+  const filter: Record<string, string> = {};
+  // Only accept string values – blocks operator injection like { $ne: "" }
+  if (typeof query.owner === "string" && query.owner.trim()) {
+    filter.owner = query.owner.trim();
+  }
+  if (typeof query.status === "string" && query.status.trim()) {
+    filter.status = query.status.trim();
+  }
 
   const datasets = await Dataset.find(filter).sort({ createdAt: -1 });
   return { data: datasets, total: datasets.length };

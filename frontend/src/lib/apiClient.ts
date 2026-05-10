@@ -48,10 +48,24 @@ export interface BackendDataset {
   riskLevel?: "low" | "medium" | "high" | "critical";
   riskScore?: number;
   riskFlags?: string[];
+  anchored?: boolean;
+  status?: string;
+  txHash?: string;
+  blockNumber?: number;
+  chainId?: number;
+  anchoredAt?: string;
+  tags?: string[];
+  notes?: string;
+  aiAnalysis?: string;
+  aiSummary?: string;
+  anomalies?: string[];
+  provenanceCard?: { steps: BackendProvenanceStep[] };
   createdAt: string;
+  updatedAt?: string;
 }
 
 export interface BackendProvenanceStep {
+  _id?: string;
   action: string;
   actor: string;
   actorAddress?: string;

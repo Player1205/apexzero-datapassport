@@ -148,9 +148,9 @@ export default function ProvenanceCard({ dataset: ds }: ProvenanceCardProps) {
           </div>
           <p className="text-sm text-text-2 leading-relaxed">{ds.description}</p>
 
-          {ds.tags?.length > 0 && (
+          {(ds.tags?.length ?? 0) > 0 && (
             <div className="flex flex-wrap gap-1.5 mt-3">
-              {ds.tags.map((t) => (
+              {ds.tags!.map((t) => (
                 <span
                   key={t}
                   className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md
@@ -192,7 +192,7 @@ export default function ProvenanceCard({ dataset: ds }: ProvenanceCardProps) {
           <InfoRow
             icon={Clock}
             label="Last Updated"
-            value={format(new Date(ds.updatedAt), "PPP")}
+            value={format(new Date(ds.updatedAt || ds.createdAt), "PPP")}
           />
           {ds.notes && (
             <InfoRow icon={FileText} label="Notes" value={ds.notes} />
@@ -314,7 +314,7 @@ export default function ProvenanceCard({ dataset: ds }: ProvenanceCardProps) {
         )}
 
         {/* Risk flags */}
-        {ds.riskFlags?.length > 0 && (
+        {(ds.riskFlags?.length ?? 0) > 0 && (
           <div className="card bg-rose-500/5 border-rose-500/20">
             <div className="flex items-center gap-2 mb-3">
               <Shield size={14} className="text-rose-400" />
@@ -323,7 +323,7 @@ export default function ProvenanceCard({ dataset: ds }: ProvenanceCardProps) {
               </p>
             </div>
             <ul className="space-y-2">
-              {ds.riskFlags.map((f, i) => (
+              {ds.riskFlags!.map((f, i) => (
                 <li key={i} className="flex items-start gap-2 text-xs text-text-2">
                   <span className="w-1 h-1 rounded-full bg-rose-400 mt-1.5 shrink-0" />
                   {f}

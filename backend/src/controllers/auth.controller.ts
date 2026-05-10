@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
+import crypto from "crypto";
 import { ethers } from "ethers";
 import { User } from "../models/User";
 import { env } from "../config/env";
@@ -54,7 +55,7 @@ export async function getNonce(
     if (!user) {
       user = await User.create({
         walletAddress: lower,
-        nonce: Math.random().toString(36).slice(2),
+        nonce: crypto.randomBytes(32).toString("hex"),
       });
     }
 
@@ -95,8 +96,8 @@ export async function verifySignature(
       throw new AppError(401, "Signature does not match address.", "INVALID_SIGNATURE");
     }
 
-    // Rotate nonce
-    user.nonce = Math.random().toString(36).slice(2);
+    // Rotate nonce (cryptographically secure)
+    user.nonce = crypto.randomBytes(32).toString("hex");
     user.lastLogin = new Date();
     await user.save();
 
