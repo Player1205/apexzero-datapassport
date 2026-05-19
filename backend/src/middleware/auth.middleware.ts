@@ -39,7 +39,7 @@ export async function requireAuth(
     const token = authHeader.slice(7);
     let payload: JwtPayload;
     try {
-      payload = jwt.verify(token, env.JWT_SECRET) as JwtPayload;
+      payload = jwt.verify(token, env.JWT_SECRET, { algorithms: ["HS256"] }) as JwtPayload;
     } catch {
       throw new AppError(401, "Invalid or expired token.", "TOKEN_INVALID");
     }
@@ -84,7 +84,7 @@ export async function optionalAuth(
     if (!authHeader?.startsWith("Bearer ")) return next();
 
     const token = authHeader.slice(7);
-    const payload = jwt.verify(token, env.JWT_SECRET) as JwtPayload;
+    const payload = jwt.verify(token, env.JWT_SECRET, { algorithms: ["HS256"] }) as JwtPayload;
     const user = await User.findById(payload.sub);
     if (user) req.user = user;
   } catch (err) {

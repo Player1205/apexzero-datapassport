@@ -82,6 +82,7 @@ export const createDatasetCtrl = async (req: Request, res: Response, next: NextF
   try {
     // Validate and whitelist fields – prevents mass-assignment / NoSQL injection
     const validated = createDatasetSchema.parse(req.body);
+    await validateUrl(validated.url);
     const newDataset = await Dataset.create({
       ...validated,
       status: "pending_audit",
@@ -156,6 +157,10 @@ export const analyzeDatasetCtrl = async (req: Request, res: Response, next: Next
     const dataset = await Dataset.findById(req.params.id);
     if (!dataset) throw new AppError(404, "Dataset not found", "NOT_FOUND");
 
+    if (dataset.ownerAddress.toLowerCase() !== req.user?.walletAddress.toLowerCase() && req.user?.role !== "admin") {
+      throw new AppError(403, "Forbidden", "FORBIDDEN");
+    }
+
     // SSRF protection on stored URL
     await validateUrl(dataset.url);
 
@@ -178,6 +183,10 @@ export const anchorDatasetCtrl = async (req: Request, res: Response, next: NextF
     assertObjectId(req.params.id);
     const dataset = await Dataset.findById(req.params.id);
     if (!dataset) throw new AppError(404, "Dataset not found", "NOT_FOUND");
+
+    if (dataset.ownerAddress.toLowerCase() !== req.user?.walletAddress.toLowerCase() && req.user?.role !== "admin") {
+      throw new AppError(403, "Forbidden", "FORBIDDEN");
+    }
 
     const tx = await blockchainService.anchorHash(
       dataset.hash,

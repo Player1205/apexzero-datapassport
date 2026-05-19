@@ -109,20 +109,20 @@ export async function validateUrl(raw: string): Promise<string> {
 
   // DNS resolution check for hostnames
   try {
-    const addresses = await dns.resolve4(hostname);
-    for (const addr of addresses) {
-      for (const pattern of BLOCKED_IP_PATTERNS) {
-        if (pattern.test(addr)) {
-          throw new Error("URL resolves to a private/internal IP address.");
-        }
+    const { address } = await dns.lookup(hostname);
+    for (const pattern of BLOCKED_IP_PATTERNS) {
+      if (pattern.test(address)) {
+        throw new Error("URL resolves to a private/internal IP address.");
       }
     }
   } catch (err: unknown) {
-    // If DNS fails with our custom message, rethrow it
-    if (err instanceof Error && err.message.includes("private/internal")) {
-      throw err;
+    if (err instanceof Error) {
+      if (err.message.includes("private/internal")) {
+        throw err;
+      }
+      throw new Error(`DNS resolution failed for hostname: ${hostname}`);
     }
-    // DNS resolution failure for other reasons — allow (could be IPv6-only)
+    throw err;
   }
 
   return parsed.toString();
